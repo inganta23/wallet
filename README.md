@@ -22,18 +22,39 @@ A production-grade backend service for a digital wallet application built with G
 
 ## Project Structure
 
-wallet/
-├── cmd/
-│ ├── api/ # Main application entry point
-│ └── migrate/ # Database migration utility
-├── internal/
-│ ├── config/ # Configuration loader
-│ ├── domain/ # Business entities & interfaces (Pure Go)
-│ ├── handler/ # HTTP Transport layer (Controllers)
-│ ├── repository/ # Data Access layer (SQL & Locking)
-│ └── service/ # Business Logic layer
-├── migrations/ # SQL Migration files (.up.sql / .down.sql)
-└── .env # Local environment variables
+graph TD
+root[wallet/]
+
+    subgraph CMD [cmd/]
+        api[api/]
+        migrate_cmd[migrate/]
+    end
+
+    subgraph INTERNAL [internal/]
+        config[config/]
+        domain[domain/]
+        handler[handler/]
+        repository[repository/]
+        service[service/]
+    end
+
+    subgraph MIGRATIONS [migrations/]
+        sql_files[SQL Files .up.sql / .down.sql]
+    end
+
+    root --> CMD
+    root --> INTERNAL
+    root --> MIGRATIONS
+    root --> env[.env]
+
+    CMD --> api
+    CMD --> migrate_cmd
+
+    INTERNAL --> config
+    INTERNAL --> domain
+    INTERNAL --> handler
+    INTERNAL --> repository
+    INTERNAL --> service
 
 ## Setup and Installation
 
